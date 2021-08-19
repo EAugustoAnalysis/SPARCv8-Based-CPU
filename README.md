@@ -10,22 +10,23 @@ Based around the DE0-CV board, but I'm planning a fomu version with USB uart bas
 Resources Borrowed:
 * Open Source UART Interface by wd5gnr - https://github.com/wd5gnr/icestickPWM/tree/master/v2/cores/osdvu
 * Open Source SD card interface by WangXuan95 - https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/README_en.md
-* PWM help by fpga4fun - https://www.fpga4fun.com/Opto2.html
-* VGA text mode reference - https://wiki.osdev.org/Text_UI
-* VGA reference - https://projectf.io/posts/fpga-graphics/
+* VGA text mode reference by OSDEV.org- https://wiki.osdev.org/Text_UI
+* VGA text mode reference on Wikipedia - https://en.wikipedia.org/wiki/VGA_text_mode
+* VGA reference ProjectF- https://projectf.io/posts/fpga-graphics/
+* PWM reference by fpga4fun - https://www.fpga4fun.com/PWM_DAC_1.html
 
 # In Progress
 (Still working on these, I wanted easily doable goals that show my ability to
 integrate IP's, create IP's, memory map IO, and utilize sparc features)
 - Fetch/Decode and top level iu module
 - Trap handling
-- ASR Registers - partially finished, but I plan to add watchdog timer and clock register here
-- UARTx2 - GPIO pins used, and LED indicators employed for UART 1
 - Block ram and internal rom
 - Memory handler
+- ASR Registers - partially finished, but I plan to add watchdog timer and clock register here
+- UARTx2 - GPIO pins used, and LED indicators employed for UART 1
 - Reset mode LED
-- VGA Text mode using SDRAM
-- 7 user LED's - Memory mapped, 1 per address, PWM based
+-SD card - Memory map a few sectors
+- 7 user LED's - Memory mapped, 1 address each, pwm
 - 6 x 7 segment display - Hex, based on one ASR register
 - SPARCv9 style watchdog timer - ASR
 - SPARCv9 style Clock register - ASR
@@ -45,12 +46,10 @@ integrate IP's, create IP's, memory map IO, and utilize sparc features)
 - I and D cache
 - Modify the memory manager to be wishbone based for portability
 - FPU
+- VGA Text mode - using block ram as character storage and the sdram as actual storage, ASR to activate
 - Memory mapped switches
-- DDR3 ram usage
-- Expanding SD card
-- SD card - Memory map a few sectors
+- SDRAM usage as main memory
 - PS/2 keyboard input
-- SMA ADC
 - More IO interfaces, possible SPI, I2C, GPIO
 - Better debugging, some kind of wishbone debug or NIOS
 - NIOS USB UART
