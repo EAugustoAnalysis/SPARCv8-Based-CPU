@@ -7,7 +7,7 @@ A bit of a toy project to get me ready for my ENEE350 class at UMD next semester
 
 Based around the DE0-CV board, but I'm planning a fomu version with USB uart based on Silice HDL.
 
-Resources Borrowed:
+__Resources:__
 * Open Source UART Interface by wd5gnr - https://github.com/wd5gnr/icestickPWM/tree/master/v2/cores/osdvu
 * Open Source SD card interface by WangXuan95 - https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/README_en.md
 * VGA text mode reference by OSDEV.org- https://wiki.osdev.org/Text_UI
