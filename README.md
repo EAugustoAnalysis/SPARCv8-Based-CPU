@@ -21,7 +21,7 @@ integrate IP's, create IP's, memory map IO, and utilize sparc features)
 - Block ram and internal rom
 - Memory handler
 - Reset mode LED
-- VGA Text mode-based HDMI using SDRAM
+- VGA Text mode using SDRAM
 - 7 user LED's - Memory mapped
 - 6 x 7 segment display - Hex, based on one ASR register
 - SPARCv9 style watchdog timer - ASR
