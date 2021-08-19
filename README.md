@@ -12,18 +12,20 @@ Resources Borrowed:
 * Open Source SD card interface by WangXuan95 - https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/README_en.md
 
 # In Progress
-(Still working on these)
+(Still working on these, I wanted easily doable goals that show my ability to
+integrate IP's, create IP's, memory map IO, and utilize sparc features)
 - Fetch/Decode and top level iu module
 - Trap handling
 - ASR Registers - partially finished, but I plan to add watchdog timer and clock register here
 - UARTx2 - GPIO pins used, and LED indicators employed for UART 1
 - Block ram and internal rom
 - Memory handler
-- Power LED
-- SD card
-- 4 user LED's - ASR based
-- SPARCv9 style watchdog timer
-- SPARCv9 style Clock register
+- Reset mode LED
+- VGA Text mode-based HDMI using SDRAM
+- 7 user LED's - Memory mapped
+- 6 x 7 segment display - Hex, based on one ASR register
+- SPARCv9 style watchdog timer - ASR
+- SPARCv9 style Clock register - ASR
 
 # In testing
 (Finished and synthesized but not tested)
@@ -40,9 +42,11 @@ Resources Borrowed:
 - I and D cache
 - Modify the memory manager to be wishbone based for portability
 - FPU
-- User switches - memory mapped?
+- Memory mapped switches
 - DDR3 ram usage
-- VGA Text mode-based HDMI using AD7513 and DDR3
+- Expanding SD card
+- SD card - Memory map a few sectors
+- PS/2 keyboard input
 - SMA ADC
 - More IO interfaces, possible SPI, I2C, GPIO
 - Better debugging, some kind of wishbone debug or NIOS
