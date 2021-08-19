@@ -10,6 +10,9 @@ Based around the DE0-CV board, but I'm planning a fomu version with USB uart bas
 Resources Borrowed:
 * Open Source UART Interface by wd5gnr - https://github.com/wd5gnr/icestickPWM/tree/master/v2/cores/osdvu
 * Open Source SD card interface by WangXuan95 - https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/README_en.md
+* PWM help by fpga4fun - https://www.fpga4fun.com/Opto2.html
+* VGA text mode reference - https://wiki.osdev.org/Text_UI
+* VGA reference - https://projectf.io/posts/fpga-graphics/
 
 # In Progress
 (Still working on these, I wanted easily doable goals that show my ability to
@@ -22,7 +25,7 @@ integrate IP's, create IP's, memory map IO, and utilize sparc features)
 - Memory handler
 - Reset mode LED
 - VGA Text mode using SDRAM
-- 7 user LED's - Memory mapped
+- 7 user LED's - Memory mapped, 1 per address, PWM based
 - 6 x 7 segment display - Hex, based on one ASR register
 - SPARCv9 style watchdog timer - ASR
 - SPARCv9 style Clock register - ASR
