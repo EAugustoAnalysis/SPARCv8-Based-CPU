@@ -20,16 +20,16 @@ __Resources:__
 integrate IP's, create IP's, memory map IO, and utilize sparc features)
 - Fetch/Decode and top level iu module
 - Trap handling
+- SPARCv9 style watchdog timer - ASR
+- SPARCv9 style Clock register - ASR
+- 6 x 7 segment display - Hex, based on one ASR register
+- ASR Registers - partially finished, but I plan to add watchdog timer and clock register here
 - Block ram and internal rom
 - Memory handler
-- ASR Registers - partially finished, but I plan to add watchdog timer and clock register here
 - UARTx2 - GPIO pins used, and LED indicators employed for UART 1
 - Reset mode LED
 -SD card - Memory map a few sectors
 - 7 user LED's - Memory mapped, 1 address each, pwm
-- 6 x 7 segment display - Hex, based on one ASR register
-- SPARCv9 style watchdog timer - ASR
-- SPARCv9 style Clock register - ASR
 
 # In testing
 (Finished and synthesized but not tested)
