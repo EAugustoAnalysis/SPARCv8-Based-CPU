@@ -211,13 +211,13 @@ always @(*) begin
 		
 		//Logical shift
 		SLL: begin
-			rd<=rs1<<rs2;
+			rd<=rs1<<rs2[4:0];
 			icc_out<=4'd0;
 			division_by_zero<=1'b0;
 			tag_overflow<=1'b0;
 		end
 		SRL: begin
-			rd<=rs1>>rs2;
+			rd<=rs1>>rs2[4:0];
 			icc_out<=4'd0;
 			division_by_zero<=1'b0;
 			tag_overflow<=1'b0;
@@ -225,7 +225,7 @@ always @(*) begin
 		
 		//Arithmetic shift
 		SRA: begin
-			rd<=rs1_signed>>>rs2_signed;
+			rd<=rs1_signed>>>rs2_signed[4:0];
 			icc_out<=4'd0;
 			division_by_zero<=1'b0;
 			tag_overflow<=1'b0;
