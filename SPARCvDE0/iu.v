@@ -275,8 +275,10 @@ reg cp_exception=1'b0;
 reg mem_address_not_aligned=1'b0;
 reg data_access_error=1'b0;
 reg data_access_exception=1'b0;
-wire tag_overflow; //handled by module
-wire division_by_zero; //handled by module
+wire tag_overflow_asserted;
+wire division_by_zero_asserted;
+reg tag_overflow=1'b0; //handled by module
+reg division_by_zero=1'b0; //handled by module
 reg trap_instruction=1'b0;
 
 reg [3:0] interrupt_level = 4'd0;
@@ -329,7 +331,7 @@ assign PIL=psr[11:8];
 assign S=psr[7]; //Supervisor mode is on by default
 assign PS=psr[6];
 assign ET=psr[5]; //Traps are currently disabled for testing
-assign CWP=psr[4];
+assign CWP=psr[4:0];
 
 //PC and nPC
 reg [31:0] PC=31'd0;
@@ -365,9 +367,12 @@ reg [31:0] rs_operand2;
 reg [31:0] calculated_addr;
 
 
-////Ticc stuff
+//Ticc stuff
 reg [31:0] trap_num_extended;
 reg [6:0] ticc_trap_type=7'd0;
+
+//CWP stuff
+reg [4:0] new_cwp;
 	
 ///////////////Instances///////////////
 alu alu(
@@ -379,8 +384,8 @@ alu alu(
 	.Y_in(Y_reg),
 	.Y_out(Y_result),
 	.alu_opcode(next_alu_opcode),
-	.division_by_zero(division_by_zero),
-	.tag_overflow(tag_overflow)
+	.division_by_zero(division_by_zero_asserted),
+	.tag_overflow(tag_overflow_asserted)
 );
 
 register_window rwin( //We handle save and restore here now
@@ -491,7 +496,10 @@ always @(posedge clk) begin //synchronous reset
 					//Arithmetic, logical, shifts, special register reads, CP/FP ops
 					else if(inst_op==2'b10 || inst_op==2'b11) begin
 						rs_operand1<=rs1;
+						//We don't care about the shift count case
+						//If shift count is active we only take the last 5 bits anyways
 						rs_operand2<=(inst_i)? {inst_simm13[12],19'd0,inst_simm13[11:0]} : rs2;
+						
 						if (inst_op==2'b10) begin
 							case(inst_op3)
 								6'h00: curr_inst_type<=ADD_INST;
@@ -781,6 +789,24 @@ always @(posedge clk) begin //synchronous reset
 						end
 					end
 					
+					//SAVE/RESTORE
+					else if(curr_inst_type==SAVE_INST) begin
+						new_cwp=(CWP-5'b1)%NWINDOWS;
+						if((WIM & 2^^new_cwp) !=32'b0) begin
+							trap<=1'b1;
+							window_overflow<=1'b1;
+						end
+						else psr[4:0]<=new_cwp;
+					end
+					else if(curr_inst_type==RESTORE_INST) begin
+						new_cwp=(CWP+5'b1)%NWINDOWS;
+						if((WIM & 2^^new_cwp) !=32'b0) begin
+							trap<=1'b1;
+							window_underflow<=1'b1;
+						end
+						else psr[4:0]<=new_cwp;
+					end
+					
 					
 					//ALU/Shift/Logic
 					//Not going to bother filtering this
@@ -792,22 +818,24 @@ always @(posedge clk) begin //synchronous reset
 					next_alu_opcode<=inst_op3;
 					
 					/* Some instructions that are legal but have no actions taken here
-					 * - CALL & Bicc
-					 * - Save/Restore
-					 * - NOP and (for this implementation) STBAR
-					 * - SETHI
-					 * - FLUSH (the unimplemented flush trap is not set)
+					 * + CALL & Bicc
+					 * + NOP and (for this implementation) STBAR
+					 * + SETHI
+					 * + FLUSH (the unimplemented flush trap is not set)
 					 */
 					 
 					/* Some instructions have their addresses calculated here (but nothing else)
 					 * - SWAP
 					 * - LD
 					 * - ST
-					 * - RETT
-					 * - JMPL
+					 * - LDST (Atomic)
+					 * + RETT
+					 * + JMPL
 					 */
 					 
-					/*  All ALU Ops need to be written out
+					/* Write Out Only
+					 * + All ALU Ops need to be written out
+					 * + Save/Restore needs to be written out
 					 */
 					state<=MEMORY_ACCESS_MODE;
 				end
@@ -820,6 +848,8 @@ always @(posedge clk) begin //synchronous reset
 					//CALL
 					if(curr_inst_type==CALL_INST) begin
 						rd_sel<=5'd15;
+						next_rd<=PC;
+						rd_wr<=1'b1;
 						PC<=nPC;
 						nPC<=branch_addr;
 					end
@@ -853,6 +883,181 @@ always @(posedge clk) begin //synchronous reset
 						end
 					end
 					
+					//FLUSH
+					else if(curr_inst_type==FLUSH_INST) begin
+						trap<=1'b1;
+						unimplemented_FLUSH<=1'b1;
+					end
+					
+					//SETHI
+					else if(curr_inst_type==SETHI_INST) begin
+						rd_sel<=inst_rd;
+						next_rd<={inst_imm22,10'd0};
+					end
+					
+					//RETT
+					else if(curr_inst_type==RETT_INST) begin
+						new_cwp=(CWP+5'b1)%NWINDOWS;
+						if(ET) begin
+							trap<=1'b1;
+							if(!S) privileged_instruction<=1'b1;
+							else illegal_instruction<=1'b1;
+						end
+						else begin
+							if(!S) begin
+								trap<=1'b1;
+								privileged_instruction<=1'b1;
+								execute_mode<=1'b0;
+								error_mode<=1'b1;
+								tbr[11:4]<=8'b00000011; //Privileged execution tt code
+							end
+							//We can't return from a trap and immediately trap again
+							//According to the specs we have to error out no matter what
+							else if((WIM & 2^^new_cwp) !=32'b0) begin
+								execute_mode<=1'b0;
+								error_mode<=1'b1;
+								tbr[11:4]<=8'b00000110; //Window underflow tt code
+								window_underflow<=1'b1;
+							end
+							else if(calculated_addr[1:0]!=0) begin
+								execute_mode<=1'b0;
+								error_mode<=1'b1;
+								tbr[11:4]<=8'b00000111; //Address misalignment tt code
+								mem_address_not_aligned<=1'b1;
+							end
+							else begin
+								psr[5]<=1'b1; //ET<=1
+								psr[7]<=PS; //S<=PS;
+								nPC<=calculated_addr;
+								PC<=nPC;
+								psr[4:0]<=new_cwp;
+							end
+						end
+					end
+					
+					else if(curr_inst_type==JMPL_INST) begin
+						if(calculated_addr[1:0]!=0) begin
+							trap<=1'b1;
+							mem_address_not_aligned=1'b1;
+						end
+						else begin
+							rd_sel<=inst_rd;
+							if(inst_rd!=0) begin
+								next_rd<=PC;
+								rd_wr<=1'b1;
+							end
+							nPC<=calculated_addr;
+							PC<=nPC;
+						end
+					end
+					
+					//SAVE/RESTORE write out
+					else if(curr_inst_type==SAVE_INST) begin
+						rd_sel<=inst_rd;
+						next_rd<=rs_operand1+rs_operand2;
+						rd_wr<=1'b1;
+					end
+					else if(curr_inst_type==RESTORE_INST) begin
+						rd_sel<=inst_rd;
+						next_rd<=rs_operand1+rs_operand2;
+						rd_wr<=1'b1;
+					end
+					
+					//Logical/Arithmetic/Divide instructions
+					else if(curr_inst_type==AND_INST
+					||curr_inst_type==ANDN_INST
+					||curr_inst_type==OR_INST
+					||curr_inst_type==ORN_INST
+					||curr_inst_type==XOR_INST
+					||curr_inst_type==XNOR_INST
+					||curr_inst_type==SLL_INST
+					||curr_inst_type==SRL_INST
+					||curr_inst_type==SRA_INST
+					||curr_inst_type==ADD_INST
+					||curr_inst_type==ADDX_INST
+					||curr_inst_type==SUB_INST
+					||curr_inst_type==SUBX_INST
+					) begin
+						rd_sel<=inst_rd;
+						next_rd<=rd_result;
+						rd_wr<=1'b1;
+					end
+					
+					//Logical/Arithmetic/Divide instructions with icc
+					else if(curr_inst_type==ADDcc_INST
+					||curr_inst_type==ANDcc_INST
+					||curr_inst_type==ORcc_INST
+					||curr_inst_type==XORcc_INST
+					||curr_inst_type==SUBcc_INST
+					||curr_inst_type==ANDNcc_INST
+					||curr_inst_type==ORNcc_INST
+					||curr_inst_type==XNORcc_INST
+					||curr_inst_type==ANDXcc_INST
+					||curr_inst_type==TADDcc_INST
+					||curr_inst_type==TSUBcc_INST
+					||curr_inst_type==SUBXcc_INST
+					||curr_inst_type==UDIVcc_INST
+					) begin
+						rd_sel<=inst_rd;
+						next_rd<=rd_result;
+						psr[23:20]<=icc_result;
+						rd_wr<=1'b1;
+					end
+					
+					//Tag overflow instructions with icc
+					else if(curr_inst_type==TSUBccTV_INST
+					||curr_inst_type==TADDccTV_INST
+					) begin
+						rd_sel<=inst_rd;
+						next_rd<=rd_result;
+						psr[23:20]<=icc_result;
+						rd_wr<=1'b1;
+						tag_overflow<=tag_overflow_asserted;
+					end
+					
+					//Division
+					else if(curr_inst_type==UDIV_INST
+					||curr_inst_type==SDIV_INST
+					) begin
+						rd_sel<=inst_rd;
+						next_rd<=rd_result;
+						rd_wr<=1'b1;
+						division_by_zero<=division_by_zero_asserted;
+					end
+					
+					//Division with icc
+					else if(curr_inst_type==UDIVcc_INST
+					||curr_inst_type==SDIVcc_INST
+					) begin
+						rd_sel<=inst_rd;
+						next_rd<=rd_result;
+						psr[23:20]<=icc_result;
+						rd_wr<=1'b1;
+						division_by_zero<=division_by_zero_asserted;
+					end
+					
+					//Multiply instructions
+					else if(curr_inst_type==UMUL_INST
+					||curr_inst_type==SMUL_INST
+					) begin
+						rd_sel<=inst_rd;
+						next_rd<=rd_result;
+						rd_wr<=1'b1;
+						Y_reg<=Y_result;
+					end
+					
+					//Multiply instructions with icc
+					else if(curr_inst_type==MULScc_INST
+					||curr_inst_type==UMULcc_INST
+					||curr_inst_type==SMULcc_INST
+					) begin
+						rd_sel<=inst_rd;
+						next_rd<=rd_result;
+						psr[23:20]<=icc_result;
+						rd_wr<=1'b1;
+						Y_reg<=Y_result;
+					end
+					
 					//All other unspecified instructions
 					//Note: We're removing FBfcc, CBccc,
 					//and Ticc from this because I didn't give
@@ -868,6 +1073,7 @@ always @(posedge clk) begin //synchronous reset
 						PC<=nPC;
 						nPC<=nPC+32'd4;
 					end
+					
 					
 					state<=FETCH_MODE;
 				end

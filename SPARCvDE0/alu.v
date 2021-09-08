@@ -365,6 +365,7 @@ always @(*) begin
 		end
 		
 		//Multiply and divide unsigned
+		//Note: Ignoring the divisor convention, don't care
 		UMUL: begin
 			{Y_out,rd}<=rs1*rs2;
 			icc_out<=4'd0;
