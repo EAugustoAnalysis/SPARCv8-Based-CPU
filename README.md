@@ -18,31 +18,34 @@ __Resources:__
 # In Progress
 (Still working on these, I wanted easily doable goals that show my ability to
 integrate IP's, create IP's, memory map IO, and utilize sparc features)
-- Fetch/Decode and top level iu module
 - Trap handling
-- SPARCv9 style watchdog timer - ASR
+- Data memory write and read
+- TSO compliantemory handler
+- Block ram and internal rom
+- Error mode LED
+- ASR Registers - partially finished, but I plan to add watchdog timer and clock register here
+
+Peripherals:
+- SPARCv9 style watchdog timer
 - SPARCv9 style Clock register - ASR
 - 6 x 7 segment display - Hex, based on one ASR register
-- ASR Registers - partially finished, but I plan to add watchdog timer and clock register here
-- Block ram and internal rom
-- Memory handler
 - UARTx2 - GPIO pins used, and LED indicators employed for UART 1
-- Reset mode LED
--SD card - Memory map a few sectors
+- SD card - Memory map a few sectors
 - 7 user LED's - Memory mapped, 1 address each, pwm
 
 # In testing
 (Finished and synthesized but not tested)
-- PC/nPC registers
+- Fetch
+- Decode
+- Execute (for most instructions)
+- Register write (for most instructions)
 - Register windows (NWINDOWS=3)
-- Y register
-- Trap base register
 - Compliant ALU with signed and unsigned multiply/divide
 
 # Future plans
 (May not get to these this summer)
 - Multi-stage pipeline
-- An actual divider
+- An actual (not space expensive altera blob) divider
 - I and D cache
 - Modify the memory manager to be wishbone based for portability
 - FPU
