@@ -50,7 +50,7 @@ module iu (
 	input wire bp_CP_exception, //CP exception assert. But it's not gonna
 	input wire [1:0] bp_CP_cc, //Condition codes for FPU branch instructions, from coprocessor status reg
 	
-	output wire reset_debug
+	output wire error_debug
 );
 
 /////////State Declarations/////////
@@ -144,7 +144,7 @@ parameter FPop1_INST = 70; //Unused, fpu/cp
 parameter FPop2_INST = 71; //Unused, fpu/cp
 parameter CPop1_INST = 72; //Unused, fpu/cp
 parameter CPop2_INST = 73; //Unused, fpu/cp
-parameter LDA_INST=74; //Atomic
+parameter LDA_INST=74; //Privileged
 parameter ADDcc_INST=75;
 parameter ANDcc_INST=76;
 parameter ORcc_INST=77;
@@ -199,8 +199,8 @@ reg [3:0] state = FETCH_MODE;
 
 //Mode
 reg reset_mode=1'b1;
-assign reset_debug=reset_mode;
 reg error_mode=1'b0;
+assign error_debug=error_mode;
 assign pb_error=error_mode; //Our PB error assertion
 reg trap_mode=1'b0;
 reg execute_mode=1'b0;
@@ -347,7 +347,6 @@ reg [31:0] next_rd=32'd0;
 reg rd_wr=1'b0;
 
 
-
 ///////////////Variables///////////////
 //ALU
 wire [31:0] Y_result;
@@ -365,6 +364,7 @@ reg [31:0] rs_operand2;
 
 //Calculated address for format 3 instructions
 reg [31:0] calculated_addr;
+reg [7:0] calculated_ASI;
 
 
 //Ticc stuff
@@ -737,11 +737,29 @@ always @(posedge clk) begin //synchronous reset
 					//Now, some instructions that are legal and implemented
 					//Note: This is where we take care of all the error and precalculation stuff for 
 					//load, store, swap, and atomic load/store
-					else if( curr_inst_type== LDSH_INST
+					
+					//No ASI calculated
+					else if( curr_inst_type== LDSB_INST 
+					|| curr_inst_type== LDSH_INST
 					|| curr_inst_type== LDUB_INST
 					|| curr_inst_type== LDUH_INST 
 					|| curr_inst_type== LD_INST
 					|| curr_inst_type== LDD_INST
+					||	curr_inst_type== LDSTUB_INST
+					|| curr_inst_type== SWAP_INST
+					|| curr_inst_type== STB_INST
+					|| curr_inst_type== STH_INST
+					|| curr_inst_type== ST_INST
+					|| curr_inst_type== STD_INST
+					|| curr_inst_type== RETT_INST
+					|| curr_inst_type== JMPL_INST
+					) begin
+						calculated_addr <= rs_operand1 + rs_operand2;
+					end
+					
+					//ASI calculated
+					else if(curr_inst_type== LDA_INST
+					|| curr_inst_type== LDDA_INST
 					|| curr_inst_type== LDUBA_INST
 					|| curr_inst_type== LDUHA_INST
 					|| curr_inst_type== LDDA_INST
@@ -752,16 +770,10 @@ always @(posedge clk) begin //synchronous reset
 					|| curr_inst_type== LDSBA_INST
 					|| curr_inst_type== LDSHA_INST
 					|| curr_inst_type== LDSTUBA_INST
-					|| curr_inst_type== SWAP_INST
 					|| curr_inst_type== SWAPA_INST
-					|| curr_inst_type== STB_INST
-					|| curr_inst_type== STH_INST
-					|| curr_inst_type== ST_INST
-					|| curr_inst_type== STD_INST
-					|| curr_inst_type== RETT_INST
-					|| curr_inst_type== JMPL_INST
 					) begin
 						calculated_addr <= rs_operand1 + rs_operand2;
+						calculated_ASI <= inst_asi;
 					end
 					
 					//Ticc
@@ -840,10 +852,71 @@ always @(posedge clk) begin //synchronous reset
 					state<=MEMORY_ACCESS_MODE;
 				end
 				MEMORY_ACCESS_MODE: begin
+
+					//Load Instructions
+					if(curr_inst_type== LDSB_INST 
+					|| curr_inst_type== LDSH_INST
+					|| curr_inst_type== LDUB_INST
+					|| curr_inst_type== LDUH_INST 
+					|| curr_inst_type== LD_INST
+					|| curr_inst_type== LDD_INST
+					) begin
+						/*TODO*/
+					end
+					
+					//Load Privileged Instructions
+					else if(curr_inst_type== LDUBA_INST
+					|| curr_inst_type== LDA_INST
+					|| curr_inst_type== LDDA_INST
+					|| curr_inst_type== LDUHA_INST
+					|| curr_inst_type== LDDA_INST
+					|| curr_inst_type== LDSBA_INST
+					|| curr_inst_type== LDSHA_INST
+					) begin
+						/*TODO*/
+					end
+					
+					//Store Instructions
+					else if(curr_inst_type== STB_INST
+					|| curr_inst_type== STH_INST
+					|| curr_inst_type== ST_INST
+					|| curr_inst_type== STD_INST
+					) begin
+						/*TODO*/
+					end
+					
+					//Store Privileged Instructions
+					else if(curr_inst_type== STA_INST
+					|| curr_inst_type== STBA_INST
+					|| curr_inst_type== STHA_INST
+					|| curr_inst_type== STDA_INST
+					) begin
+						/*TODO*/
+					end
+					
+					//Swap Instructions
+					else if(curr_inst_type== SWAP_INST) begin
+						/*TODO*/
+					end
+					
+					//Swap Privileged Instructions
+					else if(curr_inst_type== SWAPA_INST) begin
+						/*TODO*/
+					end
+					
+					//Atomic Load Store Instructions
+					else if(curr_inst_type== LDSTUB_INST) begin
+						/*TODO*/
+					end
+					
+					//Atomic Load Store Privileged Instructions
+					else if(curr_inst_type== LDSTUBA_INST) begin
+						/*TODO*/
+					end
 				
-				
-					state<=REGISTER_WRITE_MODE;
+					else state<=REGISTER_WRITE_MODE; //For all unspecified instructions we go to register write
 				end
+				
 				REGISTER_WRITE_MODE: begin
 					//CALL
 					if(curr_inst_type==CALL_INST) begin
@@ -1058,6 +1131,54 @@ always @(posedge clk) begin //synchronous reset
 						Y_reg<=Y_result;
 					end
 					
+					//LOAD/SWAP/LDSTUB
+					//Note: Store should be done
+					
+					//Load Instructions
+					if(curr_inst_type== LDSB_INST 
+					|| curr_inst_type== LDSH_INST
+					|| curr_inst_type== LDUB_INST
+					|| curr_inst_type== LDUH_INST 
+					|| curr_inst_type== LD_INST
+					|| curr_inst_type== LDD_INST
+					) begin
+						/*TODO*/
+					end
+					
+					//Load Privileged Instructions
+					else if(curr_inst_type== LDUBA_INST
+					|| curr_inst_type== LDA_INST
+					|| curr_inst_type== LDDA_INST
+					|| curr_inst_type== LDUHA_INST
+					|| curr_inst_type== LDDA_INST
+					|| curr_inst_type== LDSBA_INST
+					|| curr_inst_type== LDSHA_INST
+					) begin
+						/*TODO*/
+					end
+					
+					//Swap Instructions
+					else if(curr_inst_type== SWAP_INST) begin
+						/*TODO*/
+					end
+					
+					//Swap Privileged Instructions
+					else if(curr_inst_type== SWAPA_INST) begin
+						/*TODO*/
+					end
+					
+					//Atomic Load Store Instructions
+					else if(curr_inst_type== LDSTUB_INST) begin
+						/*TODO*/
+					end
+					
+					//Atomic Load Store Privileged Instructions
+					else if(curr_inst_type== LDSTUBA_INST) begin
+						/*TODO*/
+					end
+					
+					
+					
 					//All other unspecified instructions
 					//Note: We're removing FBfcc, CBccc,
 					//and Ticc from this because I didn't give
@@ -1073,7 +1194,6 @@ always @(posedge clk) begin //synchronous reset
 						PC<=nPC;
 						nPC<=nPC+32'd4;
 					end
-					
 					
 					state<=FETCH_MODE;
 				end
