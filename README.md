@@ -91,13 +91,13 @@ RISC CPU Help:
 
 Verification:
 * The ZIPCPU guide to formal verification - https://zipcpu.com/formal/2019/11/18/genuctrlr.html
+* Wishbone formal verification by ZIPCPU - http://zipcpu.com/zipcpu/2017/11/07/wb-formal.html
 
 SOC Design Tutorials:
 * Wishbone implementation by ZIPCPU - https://zipcpu.com/blog/2017/06/08/simple-wb-master.html
 * Wishbone interconnect implementation by ZIPCPU http://zipcpu.com/blog/2017/06/22/simple-wb-interconnect.html
 * Debugger implementation philosophy by ZIPCPU - https://zipcpu.com/zipcpu/2017/08/25/hw-debugging.html
 * SPI Master by ZIPCPU - https://zipcpu.com/blog/2018/08/16/spiflash.html
-* Wishbone formal verification by ZIPCPU - http://zipcpu.com/zipcpu/2017/11/07/wb-formal.html
 * Wishbone FAQ by PLDWorld - http://www.pldworld.com/_hdl/2/_ip/-silicore.net/wishfaq.htm
 * OpenCores WB3 Spec - https://cdn.opencores.org/downloads/wbspec_b3.pdf
 * OpenCores Wishbone Requirements - https://opencores.org/howto/wishbone
