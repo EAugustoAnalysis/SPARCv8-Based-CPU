@@ -62,12 +62,14 @@ __IP Resources:__
 * PWM reference by fpga4fun - https://www.fpga4fun.com/PWM_DAC_1.html
 
 __Testing Tools:__
+
 This is mainly just stuff for testbench automation:
 * The Unicorn Emulator (SPARCv8 emulator) - https://www.unicorn-engine.org/docs/tutorial.html
 * Unicorn SPARC Example (in java, though I use python) - https://github.com/unicorn-engine/unicorn/blob/master/bindings/java/samples/Sample_sparc.java
 * 
 
 __References:__
+
 This project has gone through 5 redesigns, and I started this with zero knowledge of processor design, so I did quite a bit of reading. On top of my ENEE350 class, which has (as of 9/8/2021) taught me a lot already. Like all great failed projects, I hope that if mine never goes anywhere it becomes a cool list of references on CPU implementation. I have these resources to thank for my philosophies and knowledge:
 
 FPGA Help:
