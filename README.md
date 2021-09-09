@@ -19,9 +19,8 @@ This made the most sense to me, as I know both Verilog and SystemVerilog to a re
 integrate IP's, create IP's, memory map IO, and utilize sparc features)
 - Trap handling
 - Data memory write and read
-- TSO compliant handler
+- TSO compliant memory handler
 - Block ram and internal rom
-- Error mode LED
 - ASR Registers - partially finished, but I plan to add a few features here
 
 Peripherals in progress:
@@ -31,6 +30,7 @@ Peripherals in progress:
 - UART TX/RX
 - PS/2 keyboard input
 - SD card - Memory map a few sectors
+- Error mode LED
 
 # In testing
 (Finished and synthesized but not tested)
