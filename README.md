@@ -10,7 +10,7 @@ Currently written in Verilog , but this is part of a 3 step project:
 2. Modify SPARCv8 for SystemVerilog
 3. Implement SPARCv9 in Systemverilog
 
-This made the most sense to me, as I know both Verilog and SystemVerilog to a reasonable degree, but it's really difficult for me to focus on the code with the kind of freedom SystemVerilog affords me.
+This made the most sense to me, as I know both Verilog and SystemVerilog to a reasonable degree, but it's really difficult for me to focus on the code with the kind of freedom SystemVerilog affords me to get lost in typedef land.
 
 __Resources:__
 * Open Source UART Interface by wd5gnr - https://github.com/wd5gnr/icestickPWM/tree/master/v2/cores/osdvu
