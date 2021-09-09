@@ -2,7 +2,9 @@
 A CPU project based on the unprivileged version of the SPARCv8 standard:
 https://sparc.org/technical-documents/
 
-The aim is not compliance, and I doubt I'll achieve it at any point.
+The aim is sort-of compliance. I doubt I'll achieve it at any point, but I do wish to get pretty close.
+There's a lot of SPARC stuff that's ambiguous or left to the direction of the programmer, so I have a lot of wiggle room.
+
 A bit of a toy project to get me ready for my UMD EE classes.
 
 Currently written in Verilog , but this is part of a 3 step project:
@@ -24,7 +26,7 @@ integrate IP's, create IP's, memory map IO, and utilize sparc features)
 
 Peripherals in progress:
 - SPARCv9 style watchdog timer
-- SPARCv9 style TICK register - ASR
+- SPARCv9 style TICK register
 - 6 x 7 segment display - Hex, based on one ASR register
 - UARTx2 - GPIO pins used, and LED indicators employed for UART 1
 - SD card - Memory map a few sectors
