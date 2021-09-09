@@ -26,7 +26,6 @@ Currently writing:
 - ASR Registers - partially finished, but I plan to add a few features here
 
 Peripherals in progress:
-- Error mode LED
 - SPARCv9 style watchdog timer
 - SPARCv9 style TICK register - in ASR
 - 6 x 7 segment display - Hex, packed into one ASR register
@@ -43,6 +42,9 @@ Peripherals in progress:
 - Register write (for most instructions)
 - Register windows (NWINDOWS=3)
 - Compliant ALU with signed and unsigned multiply/divide
+
+Peripherals in testing:
+- Error mode indicator LED
 
 # Future plans
 (Likely going to be finished after my ENEE350 classe in preparation for my 400 level digital design classes)
