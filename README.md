@@ -12,8 +12,6 @@ Currently written in Verilog , but this is part of a 3 step project:
 
 This made the most sense to me, as I know both Verilog and SystemVerilog to a reasonable degree, but it's really difficult for me to focus on the code with the kind of freedom SystemVerilog affords me.
 
-Based around the DE0-CV board for now, but as I move up I might have to push to the Genesys.
-
 __Resources:__
 * Open Source UART Interface by wd5gnr - https://github.com/wd5gnr/icestickPWM/tree/master/v2/cores/osdvu
 * Open Source SD card interface by WangXuan95 - https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/README_en.md
