@@ -70,11 +70,10 @@ This is mainly just stuff for testbench automation:
 
 __References:__
 
-This project has gone through 5 redesigns, and I started this with zero knowledge of processor design, so I did quite a bit of reading. On top of my ENEE350 class, which has (as of 9/8/2021) taught me a lot already. Like all great failed projects, I hope that if mine never goes anywhere it becomes a cool list of references on CPU implementation. I have these resources to thank for my philosophies and knowledge:
+This project has gone through 5 redesigns, and I started this with zero knowledge of processor design, so I did quite a bit of reading. On top of my ENEE350 class, which has (as of 9/8/2021) taught me a lot already, I have these resources to thank for my philosophies and knowledge. Like all great failed projects, I hope that if mine never goes anywhere it becomes a cool list of references on CPU implementation:
 
 FPGA Help:
 * Logic Design and Verification using SystemVerilog - Donald Thomas
-* OpenSPARC Internals - David L. Weaver
 * Synthesizable SystemVerilog by Sutherland-HDL https://sutherland-hdl.com/papers/2013-SNUG-SV_Synthesizable-SystemVerilog_paper.pdf
 * SystemVerilog FPGA synthesis guide by Southerland-HDL - https://sutherland-hdl.com/papers/2014-DVCon_ASIC-FPGA_SV_Synthesis_paper.pdf
 * SystemVerilog data packing by Amiq - https://www.amiq.com/consulting/2017/05/29/how-to-pack-data-using-systemverilog-streaming-operators/
@@ -104,6 +103,7 @@ SOC Design Tutorials:
 * OpenCores Wishbone Requirements - https://opencores.org/howto/wishbone
 
 SPARC Stuff I read when I needed inspiration:
+* OpenSPARC Internals - David L. Weaver
 * Peter Magnusson's excellent analysis of SPARCv8 register windows and their flaws - http://icps.u-strasbg.fr/people/loechner/public_html/enseignement/SPARC/sparcstack.html
 * SPARC instruction comparisons https://arcb.csc.ncsu.edu/~mueller/codeopt/codeopt00/notes/sparc.html
 * The Gasilier LEON2 XST SPARCv7 Manual (used this for pipelining considerations)  - https://www.cse.wustl.edu/~roger/465M/leon2-1.0.23-xst.pdf
