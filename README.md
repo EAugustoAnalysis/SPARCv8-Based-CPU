@@ -56,12 +56,15 @@ Peripherals in progress:
 
 # Resources and References
 __IP Resources:__
+
+Borrowed IP's and a few essential IP references:
 * Open Source UART Interface by wd5gnr - https://github.com/wd5gnr/icestickPWM/tree/master/v2/cores/osdvu
 * Open Source SD card interface by WangXuan95 - https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/README_en.md
 * VGA text mode reference by OSDEV.org- https://wiki.osdev.org/Text_UI
 * VGA text mode reference on Wikipedia - https://en.wikipedia.org/wiki/VGA_text_mode
 * VGA reference ProjectF- https://projectf.io/posts/fpga-graphics/
 * PWM reference by fpga4fun - https://www.fpga4fun.com/PWM_DAC_1.html
+* OpenCores Wishbone Requirements - https://opencores.org/howto/wishbone
 
 __Testing Tools:__
 
@@ -101,8 +104,6 @@ SOC Design Tutorials:
 * Debugger implementation philosophy by ZIPCPU - https://zipcpu.com/zipcpu/2017/08/25/hw-debugging.html
 * SPI Master by ZIPCPU - https://zipcpu.com/blog/2018/08/16/spiflash.html
 * Wishbone FAQ by PLDWorld - http://www.pldworld.com/_hdl/2/_ip/-silicore.net/wishfaq.htm
-* OpenCores WB3 Spec - https://cdn.opencores.org/downloads/wbspec_b3.pdf
-* OpenCores Wishbone Requirements - https://opencores.org/howto/wishbone
 
 SPARC stuff I read when I needed help and inspiration:
 * OpenSPARC Internals - David L. Weaver
