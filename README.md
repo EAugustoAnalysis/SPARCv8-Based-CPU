@@ -15,22 +15,25 @@ Currently written in Verilog , but this is part of a 3 step project:
 This made the most sense to me, as I know both Verilog and SystemVerilog to a reasonable degree, but it's really difficult for me to focus on the code with the kind of freedom SystemVerilog affords me to get lost in typedef land.
 
 # In Progress
-(Still working on these, I wanted easily doable goals that show my ability to
-integrate IP's, create IP's, memory map IO, and utilize sparc features)
+Still working on these, I wanted easily doable goals that show my ability to
+integrate IP's, create IP's, and utilize sparc features. I want all of these done before the end of my ENEE350 architectures class.
+
+Currently writing:
+- Load/Store/Swap/Atomic Load Store
 - Trap handling
-- Data memory write and read
 - TSO compliant memory handler
 - Block ram and internal rom
 - ASR Registers - partially finished, but I plan to add a few features here
 
 Peripherals in progress:
+- Error mode LED
 - SPARCv9 style watchdog timer
 - SPARCv9 style TICK register - in ASR
 - 6 x 7 segment display - Hex, packed into one ASR register
 - UART TX/RX
 - PS/2 keyboard input
 - SD card - Memory map a few sectors
-- Error mode LED
+- Capstone feature - VGA Text mode using block ram based VRAM, and an ASR register to activate
 
 # In testing
 (Finished and synthesized but not tested)
@@ -50,8 +53,7 @@ Peripherals in progress:
 
 Peripherals planned:
 - An actual (not space expensive altera blob) divider
-- VGA Text mode - using block ram as character storage and the sdram as actual storage, ASR to activate
-- Memory mapped IO
+- Memory mapped IO, cachable and non-cachable memory (like OpenSPARC)
 - More IO interfaces, possible SPI, I2C, GPIO
 - Better debugging, some kind of wishbone debug or NIOS interface
 
