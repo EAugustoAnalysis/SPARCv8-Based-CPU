@@ -102,7 +102,7 @@ SOC Design Tutorials:
 * OpenCores WB3 Spec - https://cdn.opencores.org/downloads/wbspec_b3.pdf
 * OpenCores Wishbone Requirements - https://opencores.org/howto/wishbone
 
-SPARC Stuff I read when I needed inspiration:
+SPARC stuff I read when I needed help and inspiration:
 * OpenSPARC Internals - David L. Weaver
 * Peter Magnusson's excellent analysis of SPARCv8 register windows and their flaws - http://icps.u-strasbg.fr/people/loechner/public_html/enseignement/SPARC/sparcstack.html
 * SPARC instruction comparisons https://arcb.csc.ncsu.edu/~mueller/codeopt/codeopt00/notes/sparc.html
