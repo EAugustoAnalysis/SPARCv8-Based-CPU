@@ -4,6 +4,7 @@ https://sparc.org/technical-documents/
 
 The aim is sort-of compliance. I doubt I'll achieve it at any point, but I do wish to get pretty close.
 There's a lot of SPARC stuff that's ambiguous or left to the direction of the programmer, so I have a lot of wiggle room.
+I want to document anything extraneous I produce well, and I want you to be able to run most SPARCv8 instructions and get the expected result.
 
 A bit of a toy project to get me ready for my UMD EE classes.
 
@@ -21,7 +22,7 @@ integrate IP's, create IP's, and utilize sparc features. I want all of these don
 Currently writing:
 - Load/Store/Swap/Atomic Load Store
 - Trap handling
-- TSO compliant memory handler
+- TSO compliant memory handler with wishbone
 - Block ram and internal rom
 - ASR Registers - partially finished, but I plan to add a few features here
 
@@ -29,9 +30,10 @@ Peripherals in progress:
 - SPARCv9 style watchdog timer
 - SPARCv9 style TICK register - in ASR
 - 6 x 7 segment display - Hex, packed into one ASR register
-- UART TX/RX
-- PS/2 keyboard input
+- UART TX/RX - use BRAM buffers, integrate wd5gnr's IP
+- PS/2 keyboard input - use BRAM buffers, adapt wd5gnr's UART IP
 - SD card - Memory map a few sectors
+
 - Capstone feature - VGA Text mode using block ram based VRAM, and an ASR register to activate
 
 # In testing
@@ -70,6 +72,7 @@ Borrowed IP's and a few essential IP references:
 * VGA reference ProjectF- https://projectf.io/posts/fpga-graphics/
 * PWM reference by fpga4fun - https://www.fpga4fun.com/PWM_DAC_1.html
 * OpenCores Wishbone Requirements - https://opencores.org/howto/wishbone
+* PS/2 Protocol - https://www.avrfreaks.net/sites/default/files/PS2%20Keyboard.pdf
 
 __Testing Tools:__
 
@@ -92,6 +95,9 @@ FPGA Help:
 CPU Concepts:
 * Computer Architectures (Not sure who wrote this) - http://paginapessoal.utfpr.edu.br/gortan/aoc/transparencias/t01_intro_aoc/literatura/Wiki_Computer_Architectures_Overview2.pdf
 * An excellent guide to pipelining by MS Schmalz -  https://www.cise.ufl.edu/~mssz/CompOrg/CDA-pipe.html
+
+Interrupt handling:
+* TODO
 
 RISC CPU Help:
 * The now-missing resource "Building a RISC System in an FPGA" - http://ee.sharif.edu/~micro2/files/ebooks/Building%20a%20RISC%20System%20in%20an%20FPGA.pdf
