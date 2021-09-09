@@ -22,15 +22,15 @@ integrate IP's, create IP's, memory map IO, and utilize sparc features)
 - TSO compliant handler
 - Block ram and internal rom
 - Error mode LED
-- ASR Registers - partially finished, but I plan to add watchdog timer and clock register here
+- ASR Registers - partially finished, but I plan to add a few features here
 
 Peripherals in progress:
 - SPARCv9 style watchdog timer
-- SPARCv9 style TICK register
-- 6 x 7 segment display - Hex, based on one ASR register
-- UARTx2 - GPIO pins used, and LED indicators employed for UART 1
+- SPARCv9 style TICK register - in ASR
+- 6 x 7 segment display - Hex, packed into one ASR register
+- UART TX/RX
+- PS/2 keyboard input
 - SD card - Memory map a few sectors
-- 7 user LED's - Memory mapped, 1 address each, pwm
 
 # In testing
 (Finished and synthesized but not tested)
@@ -44,15 +44,16 @@ Peripherals in progress:
 # Future plans
 (Likely going to be finished after my ENEE350 classe in preparation for my 400 level digital design classes)
 - Multi-stage pipeline
-- SDRAM usage as main memory
-- I and D cache
+- SDRAM usage as main memory, expanded memory handler
+- I and D cache as BRAMs
 - FPU
+
+Peripherals planned:
 - An actual (not space expensive altera blob) divider
 - VGA Text mode - using block ram as character storage and the sdram as actual storage, ASR to activate
-- Memory mapped switches
-- PS/2 keyboard input
+- Memory mapped IO
 - More IO interfaces, possible SPI, I2C, GPIO
-- Better debugging, some kind of wishbone debug or NIOS
+- Better debugging, some kind of wishbone debug or NIOS interface
 
 # Resources and References
 __IP Resources:__
