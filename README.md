@@ -117,7 +117,8 @@ SOC Design Tutorials:
 * Wishbone FAQ by PLDWorld - http://www.pldworld.com/_hdl/2/_ip/-silicore.net/wishfaq.htm
 
 SPARC stuff I read when I needed help and inspiration:
-* OpenSPARC Internals - David L. Weaver
+* OpenSPARC Internals (Based on the SPARCv9 Bus Transfer Model) - David L. Weaver
+* SPARCv7 Manual - http://www.bitsavers.org/pdf/solbourne/101482-00_SPARC_Architecture_Manual_Version_7_Sep88.pdf
 * Peter Magnusson's excellent analysis of SPARCv8 register windows and their flaws - http://icps.u-strasbg.fr/people/loechner/public_html/enseignement/SPARC/sparcstack.html
 * SPARC instruction comparisons https://arcb.csc.ncsu.edu/~mueller/codeopt/codeopt00/notes/sparc.html
 * The Gasilier LEON2 XST SPARCv7 Manual (used this for pipelining considerations)  - https://www.cse.wustl.edu/~roger/465M/leon2-1.0.23-xst.pdf
