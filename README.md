@@ -1,8 +1,8 @@
 # Sparcv8 Based Project
-A CPU project based on the unprivileged version of the SPARCv8 standard:
+A CPU project based on the unprivileged version of the SPARCv8 and SPARv8E standard:
 https://sparc.org/technical-documents/
 
-The aim is sort-of compliance. I doubt I'll achieve it at any point, but I do wish to get pretty close.
+The aim is sort-of compliance with base SPARCv8, assuming no MMU. I doubt I'll achieve it at any point, but I want the goal in mind to maximize binary compatibility.
 There's a lot of SPARC stuff that's ambiguous or left to the direction of the programmer, so I have a lot of wiggle room.
 I want to document anything extraneous I produce well, and I want you to be able to run most SPARCv8 instructions and get the expected result.
 
@@ -10,8 +10,9 @@ A bit of a toy project to get me ready for my UMD EE classes.
 
 Currently written in Verilog , but this is part of a 3 step project:
 1. Implement SPARCv8 in Verilog
-2. Modify SPARCv8 for SystemVerilog
-3. Implement SPARCv9 in Systemverilog
+2. Add peripherals using SPARCv8E spec
+3. Modify SPARCv8 for SystemVerilog
+4. Implement SPARCv9 in Systemverilog
 
 This made the most sense to me, as I know both Verilog and SystemVerilog to a reasonable degree, but it's really difficult for me to focus on the code with the kind of freedom SystemVerilog affords me to get lost in typedef land.
 
@@ -22,16 +23,17 @@ integrate IP's, create IP's, and utilize sparc features. I want all of these don
 Currently writing:
 - Load/Store/Swap/Atomic Load Store
 - Trap handling
+- Integrated Interrupt Controller (SPARCv8e IIRC)
 - TSO compliant memory handler with wishbone
 - Block ram and internal rom
 - ASR Registers - partially finished, but I plan to add a few features here
 
 Peripherals in progress:
-- SPARCv9 style watchdog timer
-- SPARCv9 style TICK register - in ASR
+- SPARCv8e style watchdog timer based on SPARCv8E input handler
+- SPARCv8e style counters based on SPARCv8E input handler
 - 6 x 7 segment display - Hex, packed into one ASR register
-- UART TX/RX - use BRAM buffers, integrate wd5gnr's IP
-- PS/2 keyboard input - use BRAM buffers, adapt wd5gnr's UART IP
+- UART TX/RX - use BRAM buffers and SPARCv8E input handler, integrate wd5gnr's IP
+- PS/2 keyboard input - use BRAM buffers and SPARCv8E interrupt handler, adapt wd5gnr's UART IP
 - SD card - Memory map a few sectors
 
 - Capstone feature - VGA Text mode using block ram based VRAM, and an ASR register to activate
