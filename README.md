@@ -10,11 +10,11 @@ A bit of a toy project to get me ready for my UMD EE classes.
 
 Currently written in Verilog , but this is part of a 3 step project:
 1. Implement SPARCv8 in Verilog
-2. Add peripherals using SPARCv8E spec
+2. Add peripherals using SPARCv8E spec in Verilog
 3. Modify SPARCv8 for SystemVerilog
 4. Implement SPARCv9 in Systemverilog
 
-This made the most sense to me, as I know both Verilog and SystemVerilog to a reasonable degree, but it's really difficult for me to focus on the code with the kind of freedom SystemVerilog affords me to get lost in typedef land.
+This made the most sense to me, as I wanted to start with Verilog in order to prepare for an EE class, and end with SystemVerilog in order to prepare for jobs.
 
 # In Progress
 Still working on these, I wanted easily doable goals that show my ability to
