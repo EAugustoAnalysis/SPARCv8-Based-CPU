@@ -14,11 +14,11 @@ Currently written in Verilog , but this is part of a 3 step project:
 3. Modify SPARCv8 for SystemVerilog
 4. Implement SPARCv9 in Systemverilog
 
-This made the most sense to me, as I wanted to start with Verilog in order to prepare for an EE class, and end with SystemVerilog in order to prepare for jobs.
+This made the most sense to me, as I wanted to start with Verilog in order to prepare for an EE class. I am now in that EE class, ENEE350, learning an entirely different architecture (Von Neumann, not the modified harvard of SPARCv8), but I still wish to finish this project in Verilog before moving on to the SystemVerilog implementation to prepare for jobs.
 
 # In Progress
 Still working on these, I wanted easily doable goals that show my ability to
-integrate IP's, create IP's, and utilize sparc features. I want all of these done before the end of my ENEE350 architectures class.
+integrate IP's, create IP's, and utilize sparc features. I want all of these done before the end of my fall semester, 2021.
 
 Currently writing:
 - Load/Store/Swap/Atomic Load Store
@@ -77,15 +77,16 @@ Borrowed IP's and a few essential IP references:
 * PS/2 Protocol - https://www.avrfreaks.net/sites/default/files/PS2%20Keyboard.pdf
 
 __Testing Tools:__
+My testing strategy is based around leveraging existing emulators to dynamically generate expected behaviors, drawing on the "scoreboard" testbench system I was taught in my lower level Verilog  class.
 
 This is mainly just stuff for testbench automation:
 * The Unicorn Emulator (SPARCv8 emulator) - https://www.unicorn-engine.org/docs/tutorial.html
 * Unicorn SPARC Example (in java, though I use python) - https://github.com/unicorn-engine/unicorn/blob/master/bindings/java/samples/Sample_sparc.java
-* 
+* nMigen - https://nmigen.info/nmigen/latest/start.html
 
 __References:__
 
-This project has gone through 5 redesigns, and I started this with zero knowledge of processor design, so I did quite a bit of reading. On top of my ENEE350 class, which has (as of 9/8/2021) taught me a lot already, I have these resources to thank for my philosophies and knowledge. Like all great failed projects, I hope that if mine never goes anywhere it becomes a cool list of references on CPU implementation:
+This project has gone through 5 redesigns, and I started this with zero knowledge of processor design, so I did quite a bit of reading. On top of my ENEE350 class, which has (as of 9/8/2021) taught me a lot already about general architecture design, I have these resources to thank for my philosophies and knowledge. Like all great failed projects, I hope that if mine never goes anywhere it becomes a cool list of references on CPU implementation:
 
 FPGA Help:
 * Logic Design and Verification using SystemVerilog - Donald Thomas
